@@ -1,4 +1,2 @@
-/wordpress-data/wp-admin
-/wordpress-data/wp-includes
-/wordpress-data/wp-content/*
+/wordpress-data/*
 !/wordpress-data/wp-content/themes/*
