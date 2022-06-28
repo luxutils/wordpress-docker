@@ -1,0 +1,49 @@
+version: '3.1'
+
+services:
+
+  wordpress:
+    build:
+      context: ./php-image/
+      dockerfile: Dockerfile
+      args:
+          WWWGROUP: 1000
+    ports:
+      - 8080:80
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb
+    volumes:
+      - ./wordpress-data:/var/www/html
+
+  db:
+    image: mariadb:latest
+    environment:
+      MYSQL_DATABASE: exampledb
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepass
+      MYSQL_ROOT_PASSWORD: examplepass
+    volumes:
+      - db:/var/lib/mysql
+
+  phpmyadmin:
+    image: 'phpmyadmin:latest'
+    ports:
+        - '8081:80'
+    environment:
+        PMA_HOST: db
+        PMA_USER: exampleuser
+        PMA_PASSWORD: examplepass
+        MYSQL_ROOT_PASSWORD: examplepass
+        MYSQL_USER: exampleuser
+        MYSQL_PASSWORD: examplepass
+        UPLOAD_LIMIT: '500M'
+    volumes:
+        - 'pma:/data'
+    depends_on:
+        - db
+volumes:
+  db:
+  pma:
